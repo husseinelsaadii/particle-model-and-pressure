@@ -1,0 +1,1704 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Grade 9 Physics — Particle Model & Pressure</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap');
+
+    :root {
+      --bg-deep: #070b1a;
+      --bg-section-alt: #0c1025;
+      --bg-card: rgba(15, 22, 50, 0.75);
+      --glass-border: rgba(255, 255, 255, 0.12);
+      --cyan: #00e5ff;
+      --cyan-dim: rgba(0, 229, 255, 0.15);
+      --cyan-glow: rgba(0, 229, 255, 0.35);
+      --yellow: #ffd740;
+      --yellow-dim: rgba(255, 215, 64, 0.15);
+      --blue: #64b5f6;
+      --purple: #b388ff;
+      --white: #ffffff;
+      --gray: #b0bec5;
+      --light-gray: #cfd8dc;
+      --green: #69f0ae;
+      --red: #ff5252;
+      --orange: #ffab40;
+      --radius: 18px;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Outfit', sans-serif;
+      background: var(--bg-deep);
+      color: var(--white);
+      line-height: 1.75;
+      overflow-x: hidden;
+    }
+
+    /* ========== NAV ========== */
+    .nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 5%;
+      background: rgba(7, 11, 26, 0.92);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--glass-border);
+    }
+
+    .nav-title {
+      font-weight: 700;
+      font-size: 1rem;
+      color: var(--yellow);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 4px;
+      flex-wrap: wrap;
+    }
+
+    .nav-links a {
+      color: var(--light-gray);
+      text-decoration: none;
+      font-size: 0.72rem;
+      padding: 4px 10px;
+      border-radius: 20px;
+      transition: all .3s;
+      border: 1px solid transparent;
+    }
+
+    .nav-links a:hover {
+      color: var(--yellow);
+      border-color: var(--yellow-dim);
+      background: var(--yellow-dim);
+    }
+
+    /* ========== SECTIONS ========== */
+    section {
+      padding: 80px 5%;
+      position: relative;
+    }
+
+    .alt-bg {
+      background: var(--bg-section-alt);
+    }
+
+    .section-label {
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      color: var(--yellow);
+      margin-bottom: 8px;
+      font-weight: 600;
+    }
+
+    .section-title {
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      font-weight: 800;
+      margin-bottom: 20px;
+      line-height: 1.2;
+      color: var(--white);
+    }
+
+    .section-title span {
+      color: var(--cyan);
+    }
+
+    .section-sub {
+      font-size: 1.1rem;
+      color: var(--light-gray);
+      max-width: 720px;
+      margin-bottom: 40px;
+    }
+
+    /* ========== HERO ========== */
+    #hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      padding-top: 80px;
+    }
+
+    #heroCanvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      opacity: 0.45;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero-content h1 {
+      font-size: clamp(2.5rem, 6vw, 4.5rem);
+      font-weight: 900;
+      margin-bottom: 18px;
+      line-height: 1.1;
+      background: linear-gradient(135deg, #ffffff, var(--cyan));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: fadeUp .8s ease-out;
+    }
+
+    .hero-content .subtitle {
+      font-size: 1.25rem;
+      color: var(--light-gray);
+      max-width: 620px;
+      margin: 0 auto 30px;
+      animation: fadeUp 1s ease-out;
+    }
+
+    .hero-badge {
+      display: inline-block;
+      padding: 12px 30px;
+      border-radius: 50px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid var(--glass-border);
+      font-size: 1rem;
+      color: var(--yellow);
+      font-weight: 500;
+      animation: fadeUp 1.2s ease-out;
+      backdrop-filter: blur(10px);
+    }
+
+    .hero-img {
+      max-width: 820px;
+      width: 92%;
+      border-radius: var(--radius);
+      margin-top: 44px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+      animation: fadeUp 1.4s ease-out;
+    }
+
+    /* ========== CARDS ========== */
+    .cards-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+      margin: 30px 0;
+    }
+
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius);
+      padding: 28px;
+      transition: all .35s;
+      overflow: hidden;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+      border-color: rgba(0, 229, 255, 0.25);
+      box-shadow: 0 12px 40px rgba(0, 229, 255, 0.08);
+    }
+
+    .card-icon {
+      width: 50px;
+      height: 50px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      margin-bottom: 14px;
+      background: var(--cyan-dim);
+    }
+
+    .card h3 {
+      font-size: 1.15rem;
+      margin-bottom: 8px;
+      font-weight: 700;
+      color: var(--white);
+    }
+
+    .card p {
+      font-size: 0.92rem;
+      color: var(--light-gray);
+    }
+
+    .card ul {
+      list-style: none;
+      margin-top: 12px;
+    }
+
+    .card ul li {
+      padding: 6px 0;
+      font-size: 0.88rem;
+      color: var(--light-gray);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .card ul li:last-child {
+      border: none;
+    }
+
+    /* ========== TABLE ========== */
+    .comp-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 30px 0;
+      background: var(--bg-card);
+      border-radius: var(--radius);
+      overflow: hidden;
+      border: 1px solid var(--glass-border);
+    }
+
+    .comp-table th {
+      background: rgba(255, 215, 64, 0.1);
+      color: var(--yellow);
+      padding: 14px 18px;
+      text-align: left;
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+
+    .comp-table td {
+      padding: 12px 18px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      font-size: 0.9rem;
+      color: var(--light-gray);
+    }
+
+    .comp-table td:first-child {
+      color: var(--white);
+      font-weight: 600;
+    }
+
+    .comp-table tr:last-child td {
+      border: none;
+    }
+
+    .comp-table tr:hover td {
+      background: rgba(255, 255, 255, 0.03);
+    }
+
+    /* ========== IMAGES ========== */
+    .img-row {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: stretch;
+      margin: 30px 0;
+    }
+
+    .img-card {
+      flex: 1;
+      min-width: 300px;
+      max-width: 560px;
+      aspect-ratio: 16 / 9;
+      border-radius: var(--radius);
+      overflow: hidden;
+      border: 1px solid var(--glass-border);
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.35);
+      transition: transform .3s;
+    }
+
+    .img-card:hover {
+      transform: scale(1.02);
+    }
+
+    .img-card img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+    }
+
+    .full-img {
+      width: 100%;
+      max-width: 900px;
+      margin: 30px auto;
+      display: block;
+      border-radius: var(--radius);
+      border: 1px solid var(--glass-border);
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.35);
+    }
+
+    /* ========== SIM CONTAINERS ========== */
+    .sim-container {
+      background: var(--bg-card);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius);
+      padding: 20px;
+      margin: 30px 0;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .sim-container canvas {
+      width: 100%;
+      border-radius: 12px;
+      display: block;
+      background: rgba(0, 0, 0, 0.35);
+    }
+
+    #temperature .sim-container {
+      max-width: 760px;
+      margin: 24px auto;
+      padding: 16px;
+    }
+
+    #tempSim {
+      height: 220px;
+    }
+
+    #particles .sim-container,
+    #compress .sim-container {
+      max-width: 760px;
+      margin: 24px auto;
+      padding: 16px;
+    }
+
+    #particleSim,
+    #compressSim {
+      height: 220px;
+    }
+
+    #pressure .sim-container {
+      max-width: 700px;
+      margin: 24px auto;
+      padding: 16px;
+    }
+
+    #pressureSim {
+      height: 200px;
+    }
+
+    .sim-label {
+      position: absolute;
+      top: 14px;
+      left: 20px;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: var(--yellow);
+      font-weight: 600;
+      z-index: 2;
+    }
+
+    /* ========== BUTTONS ========== */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 28px;
+      border-radius: 50px;
+      font-family: inherit;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      transition: all .3s;
+    }
+
+    .btn-cyan {
+      background: linear-gradient(135deg, var(--cyan), var(--blue));
+      color: #070b1a;
+    }
+
+    .btn-cyan:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px var(--cyan-glow);
+    }
+
+    .btn-outline {
+      background: transparent;
+      border: 1px solid var(--cyan);
+      color: var(--cyan);
+    }
+
+    .btn-outline:hover {
+      background: var(--cyan-dim);
+    }
+
+    .btn-group {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin: 20px 0;
+    }
+
+    /* ========== SLIDER ========== */
+    .slider-wrap {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin: 20px 0;
+    }
+
+    .slider-wrap input[type=range] {
+      flex: 1;
+      -webkit-appearance: none;
+      height: 8px;
+      border-radius: 4px;
+      background: rgba(255, 255, 255, 0.12);
+      outline: none;
+    }
+
+    .slider-wrap input[type=range]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: var(--cyan);
+      cursor: pointer;
+      box-shadow: 0 0 14px var(--cyan-glow);
+    }
+
+    .slider-wrap span {
+      color: var(--light-gray);
+    }
+
+    @media (max-width: 700px) {
+      #particleSim,
+      #compressSim,
+      #tempSim {
+        height: 180px;
+      }
+
+      #pressureSim {
+        height: 170px;
+      }
+    }
+
+    /* ========== EQUATION ========== */
+    .equation-box {
+      display: inline-flex;
+      align-items: center;
+      gap: 14px;
+      background: var(--bg-card);
+      border: 1px solid rgba(255, 215, 64, 0.2);
+      border-radius: var(--radius);
+      padding: 26px 44px;
+      font-size: 2.2rem;
+      font-weight: 700;
+      margin: 20px 0;
+    }
+
+    .eq-frac {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .eq-frac .eq-num {
+      border-bottom: 3px solid var(--yellow);
+      padding-bottom: 4px;
+    }
+
+    .eq-frac .eq-den {
+      padding-top: 4px;
+    }
+
+    /* ========== QUIZ ========== */
+    .quiz-q {
+      background: var(--bg-card);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius);
+      padding: 24px;
+      margin: 16px 0;
+    }
+
+    .quiz-q h4 {
+      font-size: 1rem;
+      margin-bottom: 14px;
+      font-weight: 600;
+      color: var(--white);
+    }
+
+    .quiz-opts {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .quiz-opt {
+      padding: 12px 18px;
+      border-radius: 12px;
+      cursor: pointer;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(255, 255, 255, 0.04);
+      font-family: inherit;
+      font-size: 0.9rem;
+      color: var(--white);
+      text-align: left;
+      transition: all .25s;
+    }
+
+    .quiz-opt:hover {
+      border-color: var(--cyan-dim);
+      background: var(--cyan-dim);
+    }
+
+    .quiz-opt.correct {
+      background: rgba(105, 240, 174, 0.15);
+      border-color: var(--green);
+      color: var(--green);
+    }
+
+    .quiz-opt.wrong {
+      background: rgba(255, 82, 82, 0.15);
+      border-color: var(--red);
+      color: var(--red);
+    }
+
+    .quiz-opt:disabled {
+      cursor: default;
+    }
+
+    .quiz-score {
+      text-align: center;
+      padding: 24px;
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--yellow);
+    }
+
+    /* ========== CHEAT SHEET ========== */
+    .cheat-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 16px;
+      margin: 30px 0;
+    }
+
+    .cheat-item {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--glass-border);
+      border-radius: 14px;
+      padding: 20px;
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      transition: all .3s;
+    }
+
+    .cheat-item:hover {
+      border-color: rgba(255, 215, 64, 0.25);
+      transform: translateY(-3px);
+    }
+
+    .cheat-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      background: var(--yellow-dim);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      flex-shrink: 0;
+    }
+
+    .cheat-text {
+      font-size: 0.9rem;
+      color: var(--light-gray);
+    }
+
+    .cheat-text strong {
+      color: var(--white);
+    }
+
+    /* ========== ENDING ========== */
+    #ending {
+      min-height: 55vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    #endCanvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+    }
+
+    #ending h2 {
+      font-size: clamp(1.8rem, 4vw, 3rem);
+      font-weight: 800;
+      margin-bottom: 16px;
+      color: var(--white);
+      position: relative;
+      z-index: 2;
+    }
+
+    #ending h2 span {
+      color: var(--cyan);
+    }
+
+    #ending p {
+      font-size: 1.15rem;
+      color: var(--light-gray);
+      max-width: 500px;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* ========== PRESSURE SPLIT ========== */
+    .pressure-split {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      margin: 30px 0;
+    }
+
+    @media(max-width:700px) {
+      .pressure-split {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .pressure-card {
+      background: var(--bg-card);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius);
+      padding: 28px;
+      text-align: center;
+    }
+
+    .pressure-card h4 {
+      font-size: 1.15rem;
+      color: var(--yellow);
+      margin-bottom: 10px;
+    }
+
+    .pressure-card p {
+      color: var(--light-gray);
+    }
+
+    .pressure-bar {
+      height: 16px;
+      border-radius: 8px;
+      margin: 14px auto;
+      transition: width .6s ease;
+    }
+
+    /* ========== KEY ANIMATIONS ========== */
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .fade-in {
+      opacity: 0;
+      transform: translateY(25px);
+      transition: opacity .6s ease, transform .6s ease;
+    }
+
+    .fade-in.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ========== RESPONSIVE ========== */
+    @media(max-width:768px) {
+      .nav-links {
+        display: none;
+      }
+
+      section {
+        padding: 50px 5%;
+      }
+
+      .cards-row {
+        grid-template-columns: 1fr;
+      }
+
+      .equation-box {
+        font-size: 1.6rem;
+        padding: 20px 28px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ====== NAVIGATION ====== -->
+  <nav class="nav">
+    <div class="nav-title">⚛ Particle Model & Pressure</div>
+    <div class="nav-links">
+      <a href="#hero">Home</a>
+      <a href="#particles">Particles</a>
+      <a href="#compress">Compress</a>
+      <a href="#temperature">Temperature</a>
+      <a href="#diffusion">Diffusion</a>
+      <a href="#pressure">Pressure</a>
+      <a href="#heels">Heels vs Sneakers</a>
+      <a href="#liquid-p">Liquids</a>
+      <a href="#gas-p">Gas Pressure</a>
+      <a href="#quiz">Quiz</a>
+      <a href="#cheat">Cheat Sheet</a>
+    </div>
+  </nav>
+
+  <!-- ================================================================ -->
+  <!-- SECTION 1 — HERO INTRO                                           -->
+  <!-- ================================================================ -->
+  <section id="hero">
+    <canvas id="heroCanvas"></canvas>
+    <div class="hero-content">
+      <h1>Particle Model<br>& Pressure</h1>
+      <p class="subtitle">Understanding matter, particles, motion, and pressure in real life</p>
+      <div class="hero-badge">💡 Physics becomes easy when we connect it to real life.</div>
+      <img src="image-1.png" alt="Particles and Pressure Overview" class="hero-img">
+    </div>
+  </section>
+
+  <!-- ================================================================ -->
+  <!-- SECTION 2 — EVERYTHING IS MADE OF PARTICLES                      -->
+  <!-- ================================================================ -->
+  <section id="particles">
+    <div class="section-label">Section 1</div>
+    <h2 class="section-title fade-in">Everything is Made of <span>Particles</span></h2>
+    <p class="section-sub fade-in">Matter — everything around you — is made of tiny particles that are always moving.
+      How they move and how close they are determines the state of matter.</p>
+
+    <!-- Particle Simulation -->
+    <div class="sim-container fade-in">
+      <div class="sim-label">Interactive Particle Simulation</div>
+      <canvas id="particleSim" height="280"></canvas>
+      <div class="btn-group" style="justify-content:center; margin-top:14px;">
+        <button class="btn btn-cyan" onclick="setSimState('solid')">🧊 Solid</button>
+        <button class="btn btn-outline" onclick="setSimState('liquid')">💧 Liquid</button>
+        <button class="btn btn-outline" onclick="setSimState('gas')">💨 Gas</button>
+      </div>
+    </div>
+
+    <!-- Three Cards -->
+    <div class="cards-row fade-in">
+      <div class="card">
+        <div class="card-icon">🧊</div>
+        <h3>Solid</h3>
+        <p>Particles are tightly packed in fixed positions. They vibrate but don't move around.</p>
+        <ul>
+          <li>✦ Fixed shape & volume</li>
+          <li>✦ Particles very close together</li>
+          <li>✦ Strong forces between particles</li>
+          <li>✦ Cannot be compressed</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-icon" style="background:rgba(100,181,246,0.15);">💧</div>
+        <h3>Liquid</h3>
+        <p>Particles are close but can slide past each other. They move around slowly.</p>
+        <ul>
+          <li>✦ Takes shape of container</li>
+          <li>✦ Particles close together</li>
+          <li>✦ Weaker forces than solids</li>
+          <li>✦ Very slightly compressible</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-icon" style="background:rgba(179,136,255,0.15);">💨</div>
+        <h3>Gas</h3>
+        <p>Particles are far apart and move fast in all random directions.</p>
+        <ul>
+          <li>✦ Fills entire container</li>
+          <li>✦ Particles far apart</li>
+          <li>✦ Very weak forces</li>
+          <li>✦ Easily compressed</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Comparison Table -->
+    <table class="comp-table fade-in">
+      <thead>
+        <tr>
+          <th>Property</th>
+          <th>🧊 Solid</th>
+          <th>💧 Liquid</th>
+          <th>💨 Gas</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Shape</td>
+          <td>Fixed</td>
+          <td>Takes container shape</td>
+          <td>Fills container</td>
+        </tr>
+        <tr>
+          <td>Particle Distance</td>
+          <td>Very close</td>
+          <td>Close</td>
+          <td>Far apart</td>
+        </tr>
+        <tr>
+          <td>Movement</td>
+          <td>Vibrate in place</td>
+          <td>Slide around</td>
+          <td>Random fast motion</td>
+        </tr>
+        <tr>
+          <td>Compressible?</td>
+          <td>No</td>
+          <td>Very little</td>
+          <td>Yes</td>
+        </tr>
+        <tr>
+          <td>Forces</td>
+          <td>Very strong</td>
+          <td>Moderate</td>
+          <td>Very weak</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- Images -->
+    <div class="img-row fade-in">
+      <div class="img-card"><img src="image-2.png" alt="States of Matter"></div>
+      <div class="img-card"><img src="image-3.png" alt="Particle Movement"></div>
+    </div>
+  </section>
+
+  <!-- ================================================================ -->
+  <!-- SECTION 3 — COMPRESSIBILITY                                      -->
+  <!-- ================================================================ -->
+  <section id="compress" class="alt-bg">
+    <div class="section-label">Section 2</div>
+    <h2 class="section-title fade-in">Compressibility — <span>Why Gases Squish</span></h2>
+    <p class="section-sub fade-in">Gas particles have lots of empty space between them. Push them and they move closer.
+      Solids and liquids? Almost no space — so they can't compress.</p>
+
+    <!-- Compression Simulator -->
+    <div class="sim-container fade-in">
+      <div class="sim-label">Compression Simulator</div>
+      <canvas id="compressSim" height="280"></canvas>
+      <div class="btn-group" style="justify-content:center; margin-top:14px;">
+        <button class="btn btn-cyan" id="compressBtn" onclick="toggleCompress()">🔽 Compress Gas</button>
+        <button class="btn btn-outline" onclick="tryCompressLiquid()">💧 Try Liquid</button>
+        <button class="btn btn-outline" onclick="tryCompressSolid()">🧊 Try Solid</button>
+      </div>
+      <p id="compressMsg"
+        style="text-align:center; margin-top:10px; color:var(--yellow); font-size:0.92rem; min-height:1.5em;"></p>
+    </div>
+
+    <!-- Real-life examples -->
+    <div class="cards-row fade-in">
+      <div class="card">
+        <div class="card-icon">💉</div>
+        <h3>Syringe</h3>
+        <p>Block the end and push — the air compresses because gas particles have room to move closer.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🚲</div>
+        <h3>Bicycle Pump</h3>
+        <p>You push air into a smaller space. Particles get squeezed together, increasing pressure.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🎈</div>
+        <h3>Balloon</h3>
+        <p>Squeeze a balloon — gas particles inside get pushed closer. Release and they spread back out.</p>
+      </div>
+    </div>
+
+    <img src="image-4.png" alt="Compressing a Gas" class="full-img fade-in">
+  </section>
+
+  <!-- ================================================================ -->
+  <!-- SECTION 4 — TEMPERATURE & PARTICLE MOVEMENT                      -->
+  <!-- ================================================================ -->
+  <section id="temperature">
+    <div class="section-label">Section 3</div>
+    <h2 class="section-title fade-in">Temperature & <span>Particle Movement</span></h2>
+    <p class="section-sub fade-in">Temperature is really about how fast particles move. Heat something up → particles
+      speed up. Cool it down → they slow down.</p>
+
+    <div class="sim-container fade-in">
+      <div class="sim-label">Temperature Simulator</div>
+      <canvas id="tempSim" height="280"></canvas>
+      <div class="slider-wrap" style="max-width:600px; margin:18px auto 0;">
+        <span>❄️ Cold</span>
+        <input type="range" id="tempSlider" min="0" max="100" value="30" oninput="updateTemp(this.value)">
+        <span>🔥 Hot</span>
+      </div>
+      <div id="tempLabel"
+        style="text-align:center; margin-top:8px; font-size:1rem; color:var(--blue); font-weight:600;">Temperature: Low
+      </div>
+    </div>
+
+    <div class="cards-row fade-in">
+      <div class="card">
+        <div class="card-icon">☕</div>
+        <h3>Boiling Water</h3>
+        <p>When you boil water, particles gain so much energy they escape as steam — that's why you see bubbles!</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🌸</div>
+        <h3>Perfume in a Warm Room</h3>
+        <p>Perfume spreads faster in a warm room because higher temperature = faster particles = faster diffusion.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================================================================ -->
+  <!-- SECTION 5 — DIFFUSION                                            -->
+  <!-- ================================================================ -->
+  <section id="diffusion" class="alt-bg">
+    <div class="section-label">Section 4</div>
+    <h2 class="section-title fade-in">Diffusion — <span>Particles Spread Out</span></h2>
+    <p class="section-sub fade-in">Particles always move from crowded areas to less crowded areas. This natural
+      spreading is called <strong style="color:var(--yellow);">diffusion</strong>. It happens in gases and liquids — no
+      stirring needed!</p>
+
+    <div class="sim-container fade-in">
+      <div class="sim-label">Diffusion Animation</div>
+      <canvas id="diffusionSim" height="280"></canvas>
+      <div class="btn-group" style="justify-content:center; margin-top:14px;">
+        <button class="btn btn-cyan" onclick="startDiffusion()">🧴 Release Perfume</button>
+        <button class="btn btn-outline" onclick="resetDiffusion()">↻ Reset</button>
+      </div>
+    </div>
+
+    <div class="cards-row fade-in">
+      <div class="card">
+        <div class="card-icon">🧴</div>
+        <h3>Perfume</h3>
+        <p>Spray perfume in one corner — soon the whole room smells it. Particles moved from high to low concentration.
+        </p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🎨</div>
+        <h3>Food Coloring in Water</h3>
+        <p>Drop food coloring into water. Without stirring, the color slowly spreads everywhere. That's diffusion!</p>
+      </div>
+    </div>
+
+    <img src="image-5.png" alt="Diffusion of Perfume" class="full-img fade-in">
+  </section>
+
+  <!-- ================================================================ -->
+  <!-- SECTION 6 — INTRODUCTION TO PRESSURE                             -->
+  <!-- ================================================================ -->
+  <section id="pressure">
+    <div class="section-label">Section 5</div>
+    <h2 class="section-title fade-in">What is <span>Pressure?</span></h2>
+    <p class="section-sub fade-in">Pressure is how much force is spread over an area. Same force on a smaller area =
+      more pressure. Same force on a bigger area = less pressure.</p>
+
+    <div class="equation-box fade-in">
+      <span style="color:var(--cyan);">P</span>
+      <span style="font-size:1.4rem; color:var(--white);">=</span>
+      <span class="eq-frac">
+        <span class="eq-num" style="color:var(--orange);">F</span>
+        <span class="eq-den" style="color:var(--green);">A</span>
+      </span>
+    </div>
+    <div style="margin:12px 0 30px; font-size:1rem; color:var(--light-gray);" class="fade-in">
+      <strong style="color:var(--cyan);">P</strong> = Pressure (Pascals, Pa) &nbsp;·&nbsp;
+      <strong style="color:var(--orange);">F</strong> = Force (Newtons, N) &nbsp;·&nbsp;
+      <strong style="color:var(--green);">A</strong> = Area (m²)
+    </div>
+
+    <!-- Pressure Visualizer -->
+    <div class="sim-container fade-in">
+      <div class="sim-label">Pressure Visualizer</div>
+      <canvas id="pressureSim" height="280"></canvas>
+      <div class="slider-wrap" style="max-width:500px; margin:14px auto 0;">
+        <span>Big Area</span>
+        <input type="range" id="areaSlider" min="10" max="100" value="60" oninput="updatePressureVis()">
+        <span>Small Area</span>
+      </div>
+      <div id="pressureLabel"
+        style="text-align:center; margin-top:8px; font-size:0.95rem; color:var(--yellow); font-weight:600;">Force: 500 N
+        &nbsp;|&nbsp; Area: 50 cm² &nbsp;|&nbsp; Pressure: 10 Pa</div>
+    </div>
+  </section>
+
+  <!-- ================================================================ -->
+  <!-- SECTION 7 — HIGH HEELS VS SNEAKERS                               -->
+  <!-- ================================================================ -->
+  <section id="heels" class="alt-bg">
+    <div class="section-label">Section 6</div>
+    <h2 class="section-title fade-in">High Heels vs <span>Sneakers</span></h2>
+    <p class="section-sub fade-in">Same person. Same weight. Same force. But VERY different pressure. This is the most
+      important real-life example of P = F / A.</p>
+
+    <div class="pressure-split fade-in">
+      <div class="pressure-card">
+        <h4>👠 High Heels</h4>
+        <p style="font-size:3.2rem;">👠</p>
+        <p style="color:var(--light-gray); font-size:0.92rem; margin:10px 0;">Small contact area ≈ 1 cm²</p>
+        <div class="pressure-bar" style="width:92%; background:linear-gradient(90deg,var(--red),var(--orange));"></div>
+        <p style="font-size:1.5rem; font-weight:700; color:var(--red);">P ≈ 50,000 Pa</p>
+        <p style="color:var(--yellow); font-size:0.88rem; margin-top:6px;">⚠ Extremely HIGH pressure</p>
+      </div>
+      <div class="pressure-card">
+        <h4>👟 Sneakers</h4>
+        <p style="font-size:3.2rem;">👟</p>
+        <p style="color:var(--light-gray); font-size:0.92rem; margin:10px 0;">Large contact area ≈ 200 cm²</p>
+        <div class="pressure-bar" style="width:25%; background:linear-gradient(90deg,var(--green),var(--cyan));"></div>
+        <p style="font-size:1.5rem; font-weight:700; color:var(--green);">P ≈ 2,500 Pa</p>
+        <p style="color:var(--light-gray); font-size:0.88rem; margin-top:6px;">✓ Much LOWER pressure</p>
+      </div>
+    </div>
+
+    <img src="image-6.png" alt="High Heels vs Sneakers Pressure" class="full-img fade-in">
+
+    <div class="cards-row fade-in">
+      <div class="card">
+        <div class="card-icon">🔪</div>
+        <h3>Sharp Knife</h3>
+        <p>A sharp knife cuts easily — the blade edge has a tiny area. Same force = much higher pressure on the food.
+        </p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🪡</div>
+        <h3>Needle</h3>
+        <p>A needle pierces skin with very little force because its point is incredibly small — the pressure is huge.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================================================================ -->
+  <!-- SECTION 8 — PRESSURE IN LIQUIDS                                  -->
+  <!-- ================================================================ -->
+  <section id="liquid-p">
+    <div class="section-label">Section 7</div>
+    <h2 class="section-title fade-in">Pressure in <span>Liquids</span></h2>
+    <p class="section-sub fade-in">The deeper you go, the more water pushes down on you. More depth = more pressure.</p>
+
+    <div class="sim-container fade-in">
+      <div class="sim-label">Underwater Diver — Click & Drag to Dive</div>
+      <canvas id="diverSim" height="350"></canvas>
+      <div id="diverInfo"
+        style="text-align:center; margin-top:10px; color:var(--yellow); font-size:1rem; font-weight:600;">Depth: 0 m
+        &nbsp;|&nbsp; Pressure: 101 kPa (surface)</div>
+    </div>
+
+    <div class="cards-row fade-in">
+      <div class="card">
+        <div class="card-icon">👂</div>
+        <h3>Ears Hurt Underwater</h3>
+        <p>Dive deep in a pool and your ears hurt — that's the increasing water pressure pushing on your eardrums.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🚢</div>
+        <h3>Submarines</h3>
+        <p>Submarines need super-thick walls to withstand the enormous pressure deep in the ocean.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================================================================ -->
+  <!-- SECTION 9 — GAS PRESSURE                                         -->
+  <!-- ================================================================ -->
+  <section id="gas-p" class="alt-bg">
+    <div class="section-label">Section 8</div>
+    <h2 class="section-title fade-in">Gas <span>Pressure</span></h2>
+    <p class="section-sub fade-in">Gas pressure is caused by billions of tiny particles smashing into the walls of their
+      container. More collisions or faster particles = more pressure.</p>
+
+    <div class="sim-container fade-in">
+      <div class="sim-label">Gas Pressure — Particles Hitting Walls</div>
+      <canvas id="gasSim" height="280"></canvas>
+      <div class="slider-wrap" style="max-width:500px; margin:14px auto 0;">
+        <span>Fewer Particles</span>
+        <input type="range" id="gasSlider" min="8" max="60" value="25" oninput="updateGasSim(+this.value)">
+        <span>More Particles</span>
+      </div>
+      <div id="gasInfo"
+        style="text-align:center; margin-top:8px; color:var(--yellow); font-size:0.95rem; font-weight:600;">Particles:
+        25 &nbsp;|&nbsp; Wall collisions: calculating...</div>
+    </div>
+
+    <div class="cards-row fade-in">
+      <div class="card">
+        <div class="card-icon">🎈</div>
+        <h3>Balloon</h3>
+        <p>Air particles inside a balloon push outward on the rubber. That's gas pressure keeping the balloon inflated.
+        </p>
+      </div>
+      <div class="card">
+        <div class="card-icon">💉</div>
+        <h3>Syringe</h3>
+        <p>Push the plunger of a blocked syringe — particles hit the walls more often in less space = higher pressure.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================================================================ -->
+  <!-- SECTION 10 — QUIZ                                                -->
+  <!-- ================================================================ -->
+  <section id="quiz">
+    <div class="section-label">Test Yourself</div>
+    <h2 class="section-title fade-in">Quick <span>Quiz</span></h2>
+    <p class="section-sub fade-in">Let's see what you've learned! Pick the correct answer for each question.</p>
+    <div id="quizContainer" class="fade-in"></div>
+    <div id="quizScore" class="quiz-score" style="display:none;"></div>
+  </section>
+
+  <!-- ================================================================ -->
+  <!-- SECTION 11 — CHEAT SHEET                                         -->
+  <!-- ================================================================ -->
+  <section id="cheat" class="alt-bg">
+    <div class="section-label">Summary</div>
+    <h2 class="section-title fade-in">Cheat <span>Sheet</span></h2>
+    <div class="cheat-grid fade-in">
+      <div class="cheat-item">
+        <div class="cheat-icon">⚛</div>
+        <div class="cheat-text"><strong>Matter = Particles</strong><br>Everything is made of tiny particles that are
+          always moving.</div>
+      </div>
+      <div class="cheat-item">
+        <div class="cheat-icon">🧊</div>
+        <div class="cheat-text"><strong>Solids</strong><br>Particles close together, vibrate in fixed positions, fixed
+          shape.</div>
+      </div>
+      <div class="cheat-item">
+        <div class="cheat-icon">💧</div>
+        <div class="cheat-text"><strong>Liquids</strong><br>Particles close but slide, takes container shape, fixed
+          volume.</div>
+      </div>
+      <div class="cheat-item">
+        <div class="cheat-icon">💨</div>
+        <div class="cheat-text"><strong>Gases</strong><br>Particles far apart, move fast randomly, fill any container.
+        </div>
+      </div>
+      <div class="cheat-item">
+        <div class="cheat-icon">🌡</div>
+        <div class="cheat-text"><strong>Temperature</strong><br>Higher temperature = particles move faster.</div>
+      </div>
+      <div class="cheat-item">
+        <div class="cheat-icon">🔄</div>
+        <div class="cheat-text"><strong>Diffusion</strong><br>Particles spread from crowded to less crowded areas.</div>
+      </div>
+      <div class="cheat-item">
+        <div class="cheat-icon">📐</div>
+        <div class="cheat-text"><strong>Pressure = F ÷ A</strong><br>Force divided by area. Unit: Pascals (Pa).</div>
+      </div>
+      <div class="cheat-item">
+        <div class="cheat-icon">📌</div>
+        <div class="cheat-text"><strong>Smaller Area = More Pressure</strong><br>Same force on a smaller area creates
+          higher pressure.</div>
+      </div>
+      <div class="cheat-item">
+        <div class="cheat-icon">🌊</div>
+        <div class="cheat-text"><strong>Liquid Pressure</strong><br>Increases with depth. Deeper = more pressure.</div>
+      </div>
+      <div class="cheat-item">
+        <div class="cheat-icon">💥</div>
+        <div class="cheat-text"><strong>Gas Pressure</strong><br>Caused by particles colliding with container walls.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================================================================ -->
+  <!-- SECTION 12 — ENDING                                              -->
+  <!-- ================================================================ -->
+  <section id="ending">
+    <canvas id="endCanvas"></canvas>
+    <h2>You understood the <span>hardest ideas</span> in this chapter. 🎉</h2>
+    <p>Physics becomes easy when we visualize it.</p>
+    <div style="margin-top:30px; position:relative; z-index:2;">
+      <a href="#hero" class="btn btn-cyan">↑ Back to Top</a>
+    </div>
+  </section>
+
+  <!-- ================================================================ -->
+  <!-- ALL JAVASCRIPT                                                   -->
+  <!-- ================================================================ -->
+  <script>
+    // ==================== UTILITY ====================
+    function setupCanvas(id) {
+      const c = document.getElementById(id);
+      const dpr = window.devicePixelRatio || 1;
+      const rect = c.getBoundingClientRect();
+      c.width = rect.width * dpr;
+      c.height = rect.height * dpr;
+      const ctx = c.getContext('2d');
+      ctx.scale(dpr, dpr);
+      return { c, ctx, w: rect.width, h: rect.height };
+    }
+
+    // ==================== HERO PARTICLES ====================
+    (function () {
+      const c = document.getElementById('heroCanvas');
+      const ctx = c.getContext('2d');
+      let pts = [];
+      function resize() {
+        c.width = window.innerWidth; c.height = window.innerHeight;
+        pts = [];
+        for (let i = 0; i < 55; i++) pts.push({
+          x: Math.random() * c.width, y: Math.random() * c.height,
+          vx: (Math.random() - .5) * .4, vy: (Math.random() - .5) * .4,
+          r: Math.random() * 2.5 + 1
+        });
+      }
+      resize(); window.addEventListener('resize', resize);
+      function draw() {
+        ctx.clearRect(0, 0, c.width, c.height);
+        pts.forEach(p => {
+          p.x += p.vx; p.y += p.vy;
+          if (p.x < 0 || p.x > c.width) p.vx *= -1;
+          if (p.y < 0 || p.y > c.height) p.vy *= -1;
+          ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+          ctx.fillStyle = 'rgba(0,229,255,0.5)'; ctx.fill();
+        });
+        for (let i = 0; i < pts.length; i++) for (let j = i + 1; j < pts.length; j++) {
+          const d = Math.hypot(pts[i].x - pts[j].x, pts[i].y - pts[j].y);
+          if (d < 130) {
+            ctx.beginPath(); ctx.moveTo(pts[i].x, pts[i].y); ctx.lineTo(pts[j].x, pts[j].y);
+            ctx.strokeStyle = `rgba(0,229,255,${.12 * (1 - d / 130)})`; ctx.stroke();
+          }
+        }
+        requestAnimationFrame(draw);
+      }
+      draw();
+    })();
+
+    // ==================== PARTICLE SIM (Section 2) ====================
+    let simState = 'solid', simParticles = [];
+    function initSim(state) {
+      const el = document.getElementById('particleSim');
+      const w = el.offsetWidth, h = el.offsetHeight;
+      simParticles = [];
+      if (state === 'solid') {
+        const cols = 6, rows = 6, sx = w / 2 - cols * 20, sy = h / 2 - rows * 20;
+        for (let r = 0; r < rows; r++) for (let c = 0; c < cols; c++) {
+          simParticles.push({ x: sx + c * 40 + 20, y: sy + r * 40 + 20, bx: sx + c * 40 + 20, by: sy + r * 40 + 20, vx: 0, vy: 0, r: 8 });
+        }
+      } else if (state === 'liquid') {
+        for (let i = 0; i < 35; i++) simParticles.push({
+          x: w * .2 + Math.random() * w * .6, y: h * .3 + Math.random() * h * .5,
+          vx: (Math.random() - .5) * 1.5, vy: (Math.random() - .5) * 1.5, r: 7
+        });
+      } else {
+        for (let i = 0; i < 28; i++) simParticles.push({
+          x: 40 + Math.random() * (w - 80), y: 20 + Math.random() * (h - 40),
+          vx: (Math.random() - .5) * 4, vy: (Math.random() - .5) * 4, r: 6
+        });
+      }
+    }
+    function setSimState(s) { simState = s; initSim(s); }
+
+    (function () {
+      const el = document.getElementById('particleSim');
+      const { c, ctx } = setupCanvas('particleSim');
+      initSim('solid');
+      function draw() {
+        const w = el.offsetWidth, h = el.offsetHeight;
+        ctx.clearRect(0, 0, w, h);
+        const cols = { solid: 'rgba(0,229,255,0.8)', liquid: 'rgba(100,181,246,0.8)', gas: 'rgba(179,136,255,0.75)' };
+        simParticles.forEach(p => {
+          if (simState === 'solid') { p.x = p.bx + (Math.random() - .5) * 3; p.y = p.by + (Math.random() - .5) * 3; }
+          else {
+            p.x += p.vx; p.y += p.vy;
+            if (simState === 'liquid') { if (p.x < w * .15 || p.x > w * .85) p.vx *= -1; if (p.y < h * .25 || p.y > h * .85) p.vy *= -1; }
+            else { if (p.x < 8 || p.x > w - 8) p.vx *= -1; if (p.y < 8 || p.y > h - 8) p.vy *= -1; }
+          }
+          ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+          ctx.fillStyle = cols[simState]; ctx.fill();
+          ctx.strokeStyle = 'rgba(255,255,255,0.15)'; ctx.stroke();
+        });
+        if (simState === 'liquid') { ctx.strokeStyle = 'rgba(0,229,255,0.25)'; ctx.lineWidth = 2; ctx.strokeRect(w * .15, h * .25, w * .7, h * .62); ctx.lineWidth = 1; }
+        requestAnimationFrame(draw);
+      }
+      draw();
+    })();
+
+    // ==================== COMPRESSION SIM ====================
+    let compressed = false, compressState = 'gas', compressParticles = [], compressX = 0.9;
+    function initCompressP() {
+      compressParticles = [];
+      for (let i = 0; i < 30; i++) compressParticles.push({ x: Math.random(), y: Math.random(), vx: (Math.random() - .5) * .02, vy: (Math.random() - .5) * .02 });
+    }
+    initCompressP();
+    function toggleCompress() {
+      if (compressState !== 'gas') compressed = false;
+      compressState = 'gas';
+      compressed = !compressed;
+      document.getElementById('compressBtn').textContent = compressed ? '🔼 Release Gas' : '🔽 Compress Gas';
+      document.getElementById('compressMsg').textContent = compressed ? '✅ Gas compressed! Particles are closer together.' : 'Particles spread back out.';
+    }
+    function tryCompressLiquid() {
+      compressState = 'liquid';
+      compressed = true;
+      document.getElementById('compressBtn').textContent = '🔽 Compress Gas';
+      document.getElementById('compressMsg').textContent = '💧 Liquids compress only a tiny amount because particles are already close.';
+    }
+    function tryCompressSolid() {
+      compressState = 'solid';
+      compressed = true;
+      document.getElementById('compressBtn').textContent = '🔽 Compress Gas';
+      document.getElementById('compressMsg').textContent = "❌ Solids do not compress because particles are locked tightly together.";
+    }
+
+    (function () {
+      const el = document.getElementById('compressSim');
+      const { c, ctx } = setupCanvas('compressSim');
+      function draw() {
+        const w = el.offsetWidth, h = el.offsetHeight;
+        ctx.clearRect(0, 0, w, h);
+        const targetX = compressed ? { gas: .45, liquid: .82, solid: .9 }[compressState] : .9;
+        compressX += (targetX - compressX) * .05;
+        const left = w * .05, top_ = h * .1, bw = w * compressX, bh = h * .8;
+        ctx.strokeStyle = 'rgba(0,229,255,0.35)'; ctx.lineWidth = 2; ctx.strokeRect(left, top_, bw, bh);
+        ctx.fillStyle = 'rgba(0,229,255,0.12)'; ctx.fillRect(left + bw - 10, top_, 14, bh);
+        ctx.fillStyle = 'rgba(0,229,255,0.5)'; ctx.fillRect(left + bw - 4, top_ + 10, 4, bh - 20);
+        const color = { gas: 'rgba(179,136,255,0.78)', liquid: 'rgba(100,181,246,0.82)', solid: 'rgba(0,229,255,0.82)' }[compressState];
+        if (compressState === 'solid') {
+          const cols = 7, rows = 4, gap = 24;
+          const sx = left + bw / 2 - ((cols - 1) * gap) / 2, sy = top_ + bh / 2 - ((rows - 1) * gap) / 2;
+          for (let r = 0; r < rows; r++) for (let col = 0; col < cols; col++) {
+            ctx.beginPath(); ctx.arc(sx + col * gap, sy + r * gap, 7, 0, Math.PI * 2);
+            ctx.fillStyle = color; ctx.fill();
+            ctx.strokeStyle = 'rgba(255,255,255,0.15)'; ctx.stroke();
+          }
+        } else {
+          compressParticles.forEach((p, i) => {
+            p.x += p.vx; p.y += p.vy;
+            if (p.x < .05 || p.x > .95) p.vx *= -1;
+            if (p.y < .05 || p.y > .95) p.vy *= -1;
+            const px = left + 15 + p.x * (bw - 30), py = top_ + 15 + p.y * (bh - 30);
+            const r = compressState === 'liquid' ? 7 : 6;
+            ctx.beginPath(); ctx.arc(px, py, r, 0, Math.PI * 2);
+            ctx.fillStyle = color; ctx.fill();
+            ctx.strokeStyle = 'rgba(255,255,255,0.15)'; ctx.stroke();
+          });
+        }
+        ctx.lineWidth = 1;
+        requestAnimationFrame(draw);
+      }
+      draw();
+    })();
+
+    // ==================== TEMPERATURE SIM ====================
+    let tempVal = 30, tempParticles = [];
+    function initTempP() {
+      tempParticles = [];
+      for (let i = 0; i < 30; i++) tempParticles.push({ x: Math.random(), y: Math.random(), vx: (Math.random() - .5) * .02, vy: (Math.random() - .5) * .02 });
+    }
+    initTempP();
+    function updateTemp(v) {
+      tempVal = +v;
+      const lbl = v < 33 ? 'Low' : v < 66 ? 'Medium' : 'High';
+      const col = v < 33 ? '#64b5f6' : v < 66 ? '#ffd740' : '#ff5252';
+      document.getElementById('tempLabel').textContent = 'Temperature: ' + lbl;
+      document.getElementById('tempLabel').style.color = col;
+    }
+
+    (function () {
+      const el = document.getElementById('tempSim');
+      const { c, ctx } = setupCanvas('tempSim');
+      function draw() {
+        const w = el.offsetWidth, h = el.offsetHeight;
+        ctx.clearRect(0, 0, w, h);
+        const speed = .5 + tempVal / 100 * 4;
+        const col = tempVal < 33 ? 'rgba(100,181,246,0.75)' : tempVal < 66 ? 'rgba(255,215,64,0.75)' : 'rgba(255,82,82,0.75)';
+        ctx.strokeStyle = 'rgba(255,255,255,0.08)'; ctx.strokeRect(w * .1, h * .1, w * .8, h * .8);
+        tempParticles.forEach(p => {
+          p.vx += (Math.random() - .5) * .1 * speed; p.vy += (Math.random() - .5) * .1 * speed;
+          const ms = speed * .03;
+          p.vx = Math.max(-ms, Math.min(ms, p.vx)); p.vy = Math.max(-ms, Math.min(ms, p.vy));
+          p.x += p.vx; p.y += p.vy;
+          if (p.x < .12 || p.x > .88) p.vx *= -1; if (p.y < .12 || p.y > .88) p.vy *= -1;
+          p.x = Math.max(.12, Math.min(.88, p.x)); p.y = Math.max(.12, Math.min(.88, p.y));
+          ctx.beginPath(); ctx.arc(w * p.x, h * p.y, 6, 0, Math.PI * 2);
+          ctx.fillStyle = col; ctx.fill();
+        });
+        requestAnimationFrame(draw);
+      }
+      draw();
+    })();
+
+    // ==================== DIFFUSION SIM ====================
+    let diffParticles = [], diffStarted = false;
+    function resetDiffusion() {
+      diffStarted = false; diffParticles = [];
+      for (let i = 0; i < 40; i++) diffParticles.push({
+        x: .06 + Math.random() * .07, y: .25 + Math.random() * .5,
+        vx: (Math.random() - .5) * .004, vy: (Math.random() - .5) * .004, released: false
+      });
+    }
+    resetDiffusion();
+    function startDiffusion() {
+      diffStarted = true;
+      diffParticles.forEach(p => { p.released = true; p.vx = (Math.random() - .5) * .015; p.vy = (Math.random() - .5) * .015; });
+    }
+
+    (function () {
+      const el = document.getElementById('diffusionSim');
+      const { c, ctx } = setupCanvas('diffusionSim');
+      function draw() {
+        const w = el.offsetWidth, h = 280;
+        ctx.clearRect(0, 0, w, h);
+        ctx.strokeStyle = 'rgba(255,255,255,0.06)'; ctx.strokeRect(w * .03, h * .05, w * .94, h * .9);
+        ctx.fillStyle = 'rgba(0,229,255,0.08)'; ctx.fillRect(w * .02, h * .32, w * .07, h * .36);
+        ctx.fillStyle = 'rgba(255,255,255,0.6)'; ctx.font = '20px sans-serif'; ctx.fillText('🧴', w * .03, h * .55);
+        diffParticles.forEach(p => {
+          if (p.released) {
+            p.vx += (Math.random() - .5) * .002; p.vy += (Math.random() - .5) * .002;
+            p.x += p.vx; p.y += p.vy;
+            if (p.x < .04 || p.x > .96) p.vx *= -1; if (p.y < .06 || p.y > .94) p.vy *= -1;
+          }
+          ctx.beginPath(); ctx.arc(w * p.x, h * p.y, 4, 0, Math.PI * 2);
+          ctx.fillStyle = 'rgba(179,136,255,0.7)'; ctx.fill();
+        });
+        requestAnimationFrame(draw);
+      }
+      draw();
+    })();
+
+    // ==================== PRESSURE VISUALIZER ====================
+    function updatePressureVis() {
+      const v = +document.getElementById('areaSlider').value;
+      const area = 110 - v;
+      const pressure = (500 / area).toFixed(1);
+      document.getElementById('pressureLabel').textContent =
+        'Force: 500 N  |  Area: ' + area + ' cm²  |  Pressure: ' + pressure + ' Pa';
+    }
+
+    (function () {
+      const el = document.getElementById('pressureSim');
+      const { c, ctx } = setupCanvas('pressureSim');
+      function draw() {
+        const w = el.offsetWidth, h = el.offsetHeight;
+        ctx.clearRect(0, 0, w, h);
+        const v = +document.getElementById('areaSlider').value;
+        const areaFrac = (110 - v) / 100;
+        const blockW = 40 + areaFrac * (w * .5), blockH = 30;
+        const bx = w / 2 - blockW / 2, by = h * .4;
+        // Surface
+        ctx.fillStyle = 'rgba(0,229,255,0.06)'; ctx.fillRect(0, by + blockH, w, h - by - blockH);
+        ctx.strokeStyle = 'rgba(0,229,255,0.2)'; ctx.beginPath(); ctx.moveTo(0, by + blockH); ctx.lineTo(w, by + blockH); ctx.stroke();
+        // Block
+        ctx.fillStyle = 'rgba(0,229,255,0.2)'; ctx.fillRect(bx, by, blockW, blockH);
+        ctx.strokeStyle = 'rgba(0,229,255,0.45)'; ctx.strokeRect(bx, by, blockW, blockH);
+        // Force arrow
+        ctx.strokeStyle = '#ffab40'; ctx.lineWidth = 3;
+        ctx.beginPath(); ctx.moveTo(w / 2, by - 55); ctx.lineTo(w / 2, by - 5); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(w / 2 - 8, by - 15); ctx.lineTo(w / 2, by - 5); ctx.lineTo(w / 2 + 8, by - 15); ctx.fillStyle = '#ffab40'; ctx.fill();
+        ctx.lineWidth = 1;
+        ctx.fillStyle = '#ffd740'; ctx.font = 'bold 14px Outfit'; ctx.textAlign = 'center';
+        ctx.fillText('F = 500 N', w / 2, by - 62);
+        // Pressure arrows
+        const n = Math.max(2, Math.floor(8 - areaFrac * 6));
+        const spacing = blockW / (n + 1);
+        const intensity = 1 - areaFrac;
+        for (let i = 1; i <= n; i++) {
+          const ax = bx + i * spacing, len = 20 + intensity * 40;
+          ctx.strokeStyle = `rgba(255,82,82,${.3 + intensity * .5})`; ctx.lineWidth = 2;
+          ctx.beginPath(); ctx.moveTo(ax, by + blockH + 5); ctx.lineTo(ax, by + blockH + 5 + len); ctx.stroke();
+          ctx.beginPath(); ctx.moveTo(ax - 5, by + blockH + len - 5); ctx.lineTo(ax, by + blockH + 5 + len); ctx.lineTo(ax + 5, by + blockH + len - 5); ctx.stroke();
+        }
+        ctx.lineWidth = 1;
+        ctx.fillStyle = 'rgba(207,216,220,0.7)'; ctx.font = '13px Outfit';
+        ctx.fillText(areaFrac > .5 ? 'Large Area → Low Pressure' : 'Small Area → HIGH Pressure', w / 2, h - 18);
+        ctx.textAlign = 'start';
+        requestAnimationFrame(draw);
+      }
+      draw();
+    })();
+
+    // ==================== DIVER SIM ====================
+    (function () {
+      const el = document.getElementById('diverSim');
+      const { c, ctx } = setupCanvas('diverSim');
+      let diverY = .1, dragging = false;
+      el.addEventListener('mousedown', () => dragging = true);
+      el.addEventListener('touchstart', () => dragging = true, { passive: true });
+      window.addEventListener('mouseup', () => dragging = false);
+      window.addEventListener('touchend', () => dragging = false);
+      function move(cy) { const rect = el.getBoundingClientRect(); diverY = Math.max(.05, Math.min(.85, (cy - rect.top) / rect.height)); }
+      el.addEventListener('mousemove', e => { if (dragging) move(e.clientY); });
+      el.addEventListener('touchmove', e => { if (dragging) move(e.touches[0].clientY); e.preventDefault(); }, { passive: false });
+
+      function draw() {
+        const w = el.offsetWidth, h = 350;
+        ctx.clearRect(0, 0, w, h);
+        const grd = ctx.createLinearGradient(0, 0, 0, h);
+        grd.addColorStop(0, 'rgba(100,181,246,0.08)'); grd.addColorStop(1, 'rgba(7,11,26,0.95)');
+        ctx.fillStyle = grd; ctx.fillRect(0, 0, w, h);
+        ctx.strokeStyle = 'rgba(0,229,255,0.25)'; ctx.setLineDash([5, 5]);
+        ctx.beginPath(); ctx.moveTo(0, 22); ctx.lineTo(w, 22); ctx.stroke(); ctx.setLineDash([]);
+        ctx.fillStyle = 'rgba(207,216,220,0.5)'; ctx.font = '12px Outfit'; ctx.fillText('Surface', 10, 16);
+        for (let d = 0; d < 5; d++) { const y = 22 + d * (h - 44) / 4; ctx.fillStyle = 'rgba(207,216,220,0.25)'; ctx.font = '11px Outfit'; ctx.fillText(d * 25 + 'm', w - 42, y + 4); }
+        const dy = 22 + diverY * (h - 55);
+        ctx.font = '34px sans-serif'; ctx.fillText('🤿', w / 2 - 17, dy + 12);
+        const depth = diverY * 100, pressure = 101 + depth * 9.8;
+        document.getElementById('diverInfo').textContent = 'Depth: ' + depth.toFixed(0) + ' m  |  Pressure: ' + pressure.toFixed(0) + ' kPa';
+        const barW = 130, barH = 14, bx_ = 20, by_ = h - 30;
+        ctx.fillStyle = 'rgba(255,255,255,0.08)'; ctx.fillRect(bx_, by_, barW, barH);
+        const fill = Math.min(1, pressure / 1100);
+        ctx.fillStyle = fill < .3 ? '#69f0ae' : fill < .6 ? '#ffd740' : '#ff5252';
+        ctx.fillRect(bx_, by_, barW * fill, barH);
+        ctx.strokeStyle = 'rgba(255,255,255,0.15)'; ctx.strokeRect(bx_, by_, barW, barH);
+        ctx.fillStyle = 'rgba(207,216,220,0.6)'; ctx.font = '11px Outfit'; ctx.fillText('Pressure', bx_, by_ - 5);
+        requestAnimationFrame(draw);
+      }
+      draw();
+    })();
+
+    // ==================== GAS PRESSURE SIM ====================
+    let gasParticles = [], gasCollisionCount = 0;
+    function initGasP(n) {
+      gasParticles = [];
+      for (let i = 0; i < n; i++) gasParticles.push({
+        x: .12 + Math.random() * .76, y: .12 + Math.random() * .76,
+        vx: (Math.random() - .5) * .04, vy: (Math.random() - .5) * .04
+      });
+    }
+    initGasP(25);
+    function updateGasSim(v) { initGasP(v); }
+
+    (function () {
+      const el = document.getElementById('gasSim');
+      const { c, ctx } = setupCanvas('gasSim');
+      let flashes = [], fc = 0;
+      function draw() {
+        const w = el.offsetWidth, h = 280;
+        ctx.clearRect(0, 0, w, h);
+        const bx = w * .1, by = h * .1, bw = w * .8, bh = h * .8;
+        ctx.strokeStyle = 'rgba(0,229,255,0.25)'; ctx.lineWidth = 2; ctx.strokeRect(bx, by, bw, bh); ctx.lineWidth = 1;
+        let collisions = 0;
+        gasParticles.forEach(p => {
+          p.x += p.vx; p.y += p.vy;
+          let hit = false;
+          if (p.x < .12 || p.x > .88) { p.vx *= -1; hit = true; }
+          if (p.y < .12 || p.y > .88) { p.vy *= -1; hit = true; }
+          if (hit) { collisions++; flashes.push({ x: w * p.x, y: h * p.y, life: 8 }); }
+          ctx.beginPath(); ctx.arc(w * p.x, h * p.y, 5, 0, Math.PI * 2);
+          ctx.fillStyle = 'rgba(0,229,255,0.75)'; ctx.fill();
+        });
+        flashes = flashes.filter(f => {
+          f.life--;
+          ctx.beginPath(); ctx.arc(f.x, f.y, 8 + (8 - f.life) * 2, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(255,215,64,${f.life / 10})`; ctx.fill();
+          return f.life > 0;
+        });
+        fc++;
+        if (fc % 30 === 0) {
+          gasCollisionCount = collisions * 2;
+          document.getElementById('gasInfo').textContent =
+            'Particles: ' + gasParticles.length + '  |  Wall collisions/sec: ~' + gasCollisionCount * 5;
+        }
+        requestAnimationFrame(draw);
+      }
+      draw();
+    })();
+
+    // ==================== QUIZ ====================
+    const quizData = [
+      { q: "What are solids, liquids, and gases all made of?", opts: ["Atoms only", "Tiny particles", "Molecules only", "Cells"], ans: 1 },
+      { q: "In which state do particles vibrate in fixed positions?", opts: ["Gas", "Liquid", "Solid", "Plasma"], ans: 2 },
+      { q: "Why can gases be compressed easily?", opts: ["Particles are heavy", "Particles are far apart with space between", "Particles don't move", "Particles are stuck together"], ans: 1 },
+      { q: "What happens to particles when temperature increases?", opts: ["They slow down", "They stop moving", "They move faster", "They get bigger"], ans: 2 },
+      { q: "What is diffusion?", opts: ["Particles moving from crowded to less crowded areas", "Particles sticking together", "Particles shrinking", "Particles changing color"], ans: 0 },
+      { q: "What is the formula for pressure?", opts: ["P = F × A", "P = F + A", "P = F / A", "P = A / F"], ans: 2 },
+      { q: "High heels create more pressure than sneakers because they have:", opts: ["More force", "Smaller contact area", "Bigger contact area", "Less weight"], ans: 1 },
+      { q: "What causes gas pressure in a container?", opts: ["Gravity pulling particles down", "Particles colliding with the walls", "Particles becoming heavier", "Air from outside pushing in"], ans: 1 }
+    ];
+    let quizAnswered = 0, quizCorrect = 0;
+    function buildQuiz() {
+      const container = document.getElementById('quizContainer');
+      quizData.forEach((qd, qi) => {
+        const div = document.createElement('div'); div.className = 'quiz-q';
+        div.innerHTML = '<h4>' + (qi + 1) + '. ' + qd.q + '</h4><div class="quiz-opts">' +
+          qd.opts.map((o, oi) => '<button class="quiz-opt" onclick="checkAnswer(' + qi + ',' + oi + ',this)">' + o + '</button>').join('') + '</div>';
+        container.appendChild(div);
+      });
+    }
+    function checkAnswer(qi, oi, btn) {
+      const q = btn.closest('.quiz-q');
+      if (q.dataset.answered) return;
+      q.dataset.answered = '1';
+      const btns = q.querySelectorAll('.quiz-opt');
+      btns.forEach(b => b.disabled = true);
+      if (oi === quizData[qi].ans) { btn.classList.add('correct'); quizCorrect++; }
+      else { btn.classList.add('wrong'); btns[quizData[qi].ans].classList.add('correct'); }
+      quizAnswered++;
+      if (quizAnswered === quizData.length) {
+        const sc = document.getElementById('quizScore'); sc.style.display = 'block';
+        sc.textContent = '🏆 You scored ' + quizCorrect + ' / ' + quizData.length + '!' + (quizCorrect === quizData.length ? ' Perfect! 🎉' : quizCorrect >= 6 ? ' Great job!' : ' Keep studying!');
+      }
+    }
+    buildQuiz();
+
+    // ==================== ENDING PARTICLES ====================
+    (function () {
+      const c = document.getElementById('endCanvas');
+      const ctx = c.getContext('2d');
+      let pts = [];
+      function resize() {
+        c.width = c.offsetWidth; c.height = c.offsetHeight;
+        pts = [];
+        for (let i = 0; i < 40; i++) pts.push({
+          x: Math.random() * c.width, y: Math.random() * c.height,
+          vx: (Math.random() - .5) * .5, vy: (Math.random() - .5) * .5,
+          r: Math.random() * 3 + 1
+        });
+      }
+      resize(); window.addEventListener('resize', resize);
+      function draw() {
+        ctx.clearRect(0, 0, c.width, c.height);
+        pts.forEach(p => {
+          p.x += p.vx; p.y += p.vy;
+          if (p.x < 0 || p.x > c.width) p.vx *= -1;
+          if (p.y < 0 || p.y > c.height) p.vy *= -1;
+          ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+          ctx.fillStyle = 'rgba(0,229,255,0.35)'; ctx.fill();
+        });
+        requestAnimationFrame(draw);
+      }
+      draw();
+    })();
+
+    // ==================== SCROLL FADE-IN ====================
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+    }, { threshold: .12 });
+    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+  </script>
+</body>
+
+</html>
